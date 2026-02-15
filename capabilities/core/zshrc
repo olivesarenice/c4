@@ -1,0 +1,75 @@
+# ~/.zshrc (Managed by c4)
+
+# 1. Secrets & Environment
+# ------------------------------------------------------------------------------
+if [ -f "$HOME/.config/c4/secrets.env" ]; then
+    source "$HOME/.config/c4/secrets.env"
+fi
+
+# 2. Core Toolchain (Brew)
+# ------------------------------------------------------------------------------
+# Brew
+if [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
+    eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+elif [ -d "$HOME/.linuxbrew/bin" ]; then
+    eval "$($HOME/.linuxbrew/bin/brew shellenv)"
+fi
+
+# CUDA Paths (User Requested)
+export PATH="/usr/local/cuda-13.0/bin${PATH:+:${PATH}}"
+export LD_LIBRARY_PATH="/usr/local/cuda-12.4/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+
+# 3. Universal Runtimes
+# ------------------------------------------------------------------------------
+# fnm (Node.js)
+if command -v fnm &> /dev/null; then
+    eval "$(fnm env --use-on-cd)"
+fi
+
+# uv (Python)
+# uv is in brew path, so auto-loaded.
+# Completion:
+if command -v uv &> /dev/null; then
+    eval "$(uv generate-shell-completion zsh)"
+fi
+
+# 4. Plugins & UX
+# ------------------------------------------------------------------------------
+# Helper to source brew plugins
+source_brew_plugin() {
+    local p="/home/linuxbrew/.linuxbrew/share/$1/$1.zsh"
+    [ -f "$p" ] && source "$p"
+}
+
+source_brew_plugin "zsh-autosuggestions"
+source_brew_plugin "zsh-syntax-highlighting"
+
+# History
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+
+# Aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias g='git'
+alias c4='cd ~/projects/c4'
+alias reload='source ~/.zshrc'
+alias bwul='export BW_SESSION=$(bw unlock --raw)'
+alias cat='bat --paging=never'
+
+# 5. Prompt (Oh My Posh)
+# ------------------------------------------------------------------------------
+if command -v oh-my-posh &> /dev/null; then
+    eval "$(oh-my-posh init zsh --config 'patriksvensson')"
+fi
+
+# 6. Local/Host Specific Overrides
+# ------------------------------------------------------------------------------
+if [ -f "$HOME/.zshrc.local" ]; then
+    source "$HOME/.zshrc.local"
+fi
