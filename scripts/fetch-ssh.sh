@@ -38,12 +38,12 @@ if [ ! -d "$SSH_DIR" ]; then
 fi
 
 # 5. Fetch
-echo "Fetching '$ITEM_NAME'..."
-# Fetch the item JSON, then extract the custom field named 'private-key'
-KEY_CONTENT=$(bw get item "$ITEM_NAME" | jq -r '.fields[] | select(.name=="private-key").value')
+echo "Fetching '$ITEM_NAME' (Notes)..."
+# Fetch the full item JSON, then parse the 'notes' field
+KEY_CONTENT=$(bw get item "$ITEM_NAME" | jq -r '.notes')
 
 if [ -z "$KEY_CONTENT" ] || [ "$KEY_CONTENT" == "null" ]; then
-    echo "Error: Could not retrieve 'private-key' field from '$ITEM_NAME'."
+    echo "Error: Could not retrieve notes from '$ITEM_NAME'."
     exit 1
 fi
 

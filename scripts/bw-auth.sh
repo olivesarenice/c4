@@ -20,10 +20,23 @@ if [ "$BW_STATUS" == "unauthenticated" ]; then
     BW_STATUS=$(bw status | grep -o '"status":"[^"]*"' | cut -d'"' -f4)
 fi
 
+# Check for .env to load master password
+if [ -f "$HOME/projects/c4/.env" ]; then
+    source "$HOME/projects/c4/.env"
+elif [ -f ".env" ]; then
+    source ".env"
+fi
+
 if [ "$BW_STATUS" == "locked" ]; then
-    echo "🔐 Vault is locked. Enter Master Password."
-    # Capture output but check exit code
-    TEMP_SESSION=$(bw unlock --raw)
+    if [ -n "$BITWARDEN_MASTER" ]; then
+        echo "🔐 Unlocking with BITWARDEN_MASTER from .env..."
+        TEMP_SESSION=$(bw unlock "$BITWARDEN_MASTER" --raw)
+    else
+        echo "🔐 Vault is locked. Enter Master Password."
+        # Capture output but check exit code
+        TEMP_SESSION=$(bw unlock --raw)
+    fi
+    
     RET=$?
     
     if [ $RET -ne 0 ]; then
