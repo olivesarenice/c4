@@ -58,7 +58,7 @@ if [ -f "$TARGET_FILE" ]; then
     fi
 fi
 
-echo "$KEY_CONTENT" > "$TARGET_FILE"
+printf "%s\n" "$KEY_CONTENT" > "$TARGET_FILE"
 chmod 600 "$TARGET_FILE"
 
 echo "✅ SSH Key installed to $TARGET_FILE"
