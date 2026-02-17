@@ -33,9 +33,7 @@ cd c4
     - `core/`: Base system (brew, zsh).
     - `dev/`: Development tools (languages, CLIs).
     - `desktop/`: GUI application configs (VS Code).
-- `scripts/`: Helper scripts for secrets and identity management.
-    - `fetch-env.sh`: Populates `~/.config/c4/secrets.env` from Bitwarden.
-    - `fetch-ssh.sh`: Retrieves SSH keys from Bitwarden.
+    - `fetch.sh`: **Unified command** to refresh all secrets (Env + SSH).
 - `docs/`: Documentation and setup guides.
 
 ## License

@@ -80,7 +80,7 @@ After bootstrapping, you likely need your API keys (OpenAI, GitHub, etc.) in you
 
 Run the environment fetcher:
 ```bash
-./scripts/fetch-env.sh
+./scripts/fetch.sh
 ```
 **What it does:**
 *   unlocks Bitwarden (using the shared `bw-auth` logic).
