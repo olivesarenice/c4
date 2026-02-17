@@ -35,6 +35,9 @@ declare -a SECRETS=(
     "HETZNER_TOKEN:env-hetzner-token"
 )
 
+echo "Syncing Bitwarden Vault..."
+bw sync
+
 echo "Fetching secrets into $SECRETS_FILE..."
 echo "# c4 Secrets - Generated $(date)" > "$SECRETS_FILE"
 
@@ -103,7 +106,8 @@ printf "%s\n" "$KEY_CONTENT" > "$TARGET_FILE"
 chmod 600 "$TARGET_FILE"
 
 echo "✅ SSH Key installed to $TARGET_FILE"
-echo "You may now need to add it to your agent: ssh-add $TARGET_FILE"
+echo "Adding to ssh-agent it to your agent: ssh-add $TARGET_FILE"
+ssh-add $TARGET_FILE
 
 echo ""
 echo "✅ All secrets fetched successfully."
