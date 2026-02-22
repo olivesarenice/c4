@@ -33,7 +33,9 @@ cd c4
     - `core/`: Base system (brew, zsh).
     - `dev/`: Development tools (languages, CLIs).
     - `desktop/`: GUI application configs (VS Code).
-    - `fetch.sh`: **Unified command** to refresh all secrets (Env + SSH).
+- `scripts/`: Helper scripts.
+    - `fetch.sh`: **Unified command** to refresh all secrets (SSH keys + env vars).
+    - `bw-auth.sh`: Bitwarden authentication helper.
 - `docs/`: Documentation and setup guides.
 
 ## License

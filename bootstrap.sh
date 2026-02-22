@@ -12,16 +12,16 @@ NC='\033[0m'
 
 echo -e "${BLUE}=== c4: Digital Life Installer ===${NC}"
 
-# 1. Core Capability (Zsh, Starship)
-echo -e "${YELLOW}[1/4] Installing Core System...${NC}"
+# 1. Core Capability (Zsh, oh-my-posh, plugins)
+echo -e "${YELLOW}[1/5] Installing Core System...${NC}"
 bash ./capabilities/core/install.sh
 
 # 2. Dev Capability (uv, fnm, Docker)
-echo -e "${YELLOW}[2/4] Installing Dev Toolchain...${NC}"
+echo -e "${YELLOW}[2/5] Installing Dev Toolchain...${NC}"
 bash ./capabilities/dev/install.sh
 
 # 3. Identity (Bitwarden)
-echo -e "${YELLOW}[3/4] Authenticating Identity...${NC}"
+echo -e "${YELLOW}[3/5] Authenticating Identity...${NC}"
 
 # Source the reusable auth script
 # We use . because we are inside the repo root when running bootstrap
@@ -31,13 +31,25 @@ else
     echo "⚠️  scripts/bw-auth.sh not found."
 fi
 
-echo "Do you want to fetch SSH keys from Bitwarden?"
-read -p "Fetch keys? (y/N): " -n 1 -r
+# 4. Fetch Secrets (SSH keys + env vars)
+echo -e "${YELLOW}[4/5] Fetching Secrets...${NC}"
+echo "Do you want to fetch secrets from Bitwarden (SSH keys + API keys)?"
+read -p "Fetch secrets? (y/N): " -n 1 -r
 echo
 if [[ $REPLY =~ ^[Yy]$ ]]; then
-    ./scripts/fetch-ssh.sh
+    ./scripts/fetch.sh
 fi
 
-# 4. Success
+# 5. VSCode Profile
+echo -e "${YELLOW}[5/5] VSCode Profile${NC}"
+echo "📦 Import VS Code profile manually:"
+echo "   1. Open VS Code → Ctrl+Shift+P"
+echo "   2. 'Profiles: Import Profile...'"
+echo "   3. Select: $(pwd)/capabilities/desktop/default.code-profile"
+echo ""
+echo "💡 To update profile: Ctrl+Shift+P → 'Profiles: Export Profile...' → overwrite the file → git commit"
+echo ""
+
+# Done
 echo -e "${GREEN}=== Bootstrap Complete ===${NC}"
 echo "Please restart your shell to apply changes."

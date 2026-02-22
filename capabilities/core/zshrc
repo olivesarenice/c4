@@ -23,9 +23,9 @@ elif [ -d "$HOME/.linuxbrew/bin" ]; then
     eval "$($HOME/.linuxbrew/bin/brew shellenv)"
 fi
 
-# CUDA Paths (User Requested)
-export PATH="/usr/local/cuda-13.0/bin${PATH:+:${PATH}}"
-export LD_LIBRARY_PATH="/usr/local/cuda-12.4/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}"
+# CUDA Paths (only if installed)
+[ -d "/usr/local/cuda-13.0/bin" ] && export PATH="/usr/local/cuda-13.0/bin:$PATH"
+[ -d "/usr/local/cuda-12.4/lib64" ] && export LD_LIBRARY_PATH="/usr/local/cuda-12.4/lib64:$LD_LIBRARY_PATH"
 
 # 3. Universal Runtimes
 # ------------------------------------------------------------------------------
@@ -46,7 +46,10 @@ fi
 # Helper to source brew plugins
 source_brew_plugin() {
     local p="/home/linuxbrew/.linuxbrew/share/$1/$1.zsh"
-    [ -f "$p" ] && source "$p"
+    local p2="$HOME/.linuxbrew/share/$1/$1.zsh"
+    if [ -f "$p" ]; then source "$p"
+    elif [ -f "$p2" ]; then source "$p2"
+    fi
 }
 
 source_brew_plugin "zsh-autosuggestions"
@@ -74,7 +77,7 @@ alias agy='antigravity'
 # 5. Prompt (Oh My Posh)
 # ------------------------------------------------------------------------------
 if command -v oh-my-posh &> /dev/null; then
-    eval "$(oh-my-posh init zsh --config 'patriksvensson')"
+    eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/patriksvensson.omp.json)"
 fi
 
 # 6. Local/Host Specific Overrides

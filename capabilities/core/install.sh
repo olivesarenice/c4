@@ -45,7 +45,8 @@ if [ "$SHELL" != "$(which zsh)" ]; then
 fi
 
 # 5. Link .zshrc
-C4_ZSHRC="$HOME/projects/c4/capabilities/core/zshrc"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+C4_ZSHRC="$SCRIPT_DIR/zshrc"
 TARGET_ZSHRC="$HOME/.zshrc"
 
 if [ -f "$TARGET_ZSHRC" ] && [ ! -L "$TARGET_ZSHRC" ]; then

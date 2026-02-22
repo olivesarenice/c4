@@ -29,5 +29,5 @@ Standard security practice suggests unique keys per device. However, for a singl
 2.  **Fetch Keys**:
     Run the helper script:
     ```bash
-    ./scripts/fetch-ssh.sh
+    ./scripts/fetch.sh
     ```

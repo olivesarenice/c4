@@ -32,6 +32,7 @@ mkdir -p "$(dirname "$SECRETS_FILE")"
 declare -a SECRETS=(
     "GITHUB_TOKEN:env-github-token"
     "GEMINI_API_KEY:env-gemini-api-key"
+    "GEMINI_AISTUDIO_API_KEY:env-gemini-aistudio-api-key"
     "HETZNER_TOKEN:env-hetzner-token"
 )
 
