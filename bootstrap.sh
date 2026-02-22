@@ -41,7 +41,7 @@ if [[ $REPLY =~ ^[Yy]$ ]]; then
 fi
 
 # 5. VSCode Profile
-echo -e "${YELLOW}[5/5] VSCode Profile${NC}"
+echo -e "${YELLOW}[5/6] VSCode Profile${NC}"
 echo "📦 Import VS Code profile manually:"
 echo "   1. Open VS Code → Ctrl+Shift+P"
 echo "   2. 'Profiles: Import Profile...'"
@@ -49,6 +49,14 @@ echo "   3. Select: $(pwd)/capabilities/desktop/default.code-profile"
 echo ""
 echo "💡 To update profile: Ctrl+Shift+P → 'Profiles: Export Profile...' → overwrite the file → git commit"
 echo ""
+
+# 6. Agent Config Sync (Rules, Workflows, Skills → global Antigravity dirs)
+echo -e "${YELLOW}[6/6] Syncing Agent Config...${NC}"
+if [ -f "./scripts/sync-agents.sh" ]; then
+    bash ./scripts/sync-agents.sh
+else
+    echo "⚠️  scripts/sync-agents.sh not found — skipping agent sync."
+fi
 
 # Done
 echo -e "${GREEN}=== Bootstrap Complete ===${NC}"
