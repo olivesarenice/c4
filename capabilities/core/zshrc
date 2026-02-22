@@ -73,6 +73,7 @@ alias reload='source ~/.zshrc'
 alias bwul='export BW_SESSION=$(bw unlock --raw)'
 alias cat='bat --paging=never'
 alias agy='antigravity'
+alias vault='antigravity C:/Users/Oliver/Desktop/personal'
 
 # 5. Prompt (Oh My Posh)
 # ------------------------------------------------------------------------------
