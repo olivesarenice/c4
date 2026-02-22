@@ -7,10 +7,7 @@ description: Access the USER's personal Obsidian knowledge vault — location, r
 
 ## Vault Location
 
-| Context | Path |
-|---|---|
-| Windows | `C:\Users\USER\Desktop\personal` |
-| WSL | `/mnt/c/Users/USER/Desktop/personal` |
+`C:\Users\Oliver\Desktop\personal`
 
 ## Read / Write Rules
 
@@ -37,10 +34,10 @@ Content...
 
 ## Common Tasks
 
-**Explore structure:** `list_dir /mnt/c/Users/USER/Desktop/personal`
+**Explore structure:** `list_dir C:\Users\Oliver\Desktop\personal`
 
 **Search content:** `grep_search` against the vault path.
 
-**Read a note:** `view_file` with the absolute WSL path.
+**Read a note:** `view_file` with the Windows path.
 
-**Create a note:** `write_to_file` → `/mnt/c/Users/USER/Desktop/personal/AI Inbox/<filename>.md`
+**Create a note:** `write_to_file` → `C:\Users\Oliver\Desktop\personal\AI Inbox\<filename>.md`
