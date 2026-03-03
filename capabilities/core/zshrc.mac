@@ -1,0 +1,81 @@
+# ~/.zshrc — macOS (Managed by c4)
+
+# 1. Secrets & Environment
+# ------------------------------------------------------------------------------
+if [ -f "$HOME/.config/c4/secrets.env" ]; then
+    source "$HOME/.config/c4/secrets.env"
+fi
+
+# 2. SSH Agent
+# ------------------------------------------------------------------------------
+if [ -z "$SSH_AUTH_SOCK" ]; then
+   eval "$(ssh-agent -s)" > /dev/null
+fi
+
+# 3. Core Toolchain (Brew)
+# ------------------------------------------------------------------------------
+if [ -d "/opt/homebrew/bin" ]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [ -d "/usr/local/bin/brew" ]; then
+    eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# 4. Universal Runtimes
+# ------------------------------------------------------------------------------
+# Completion system (needed before any compdef calls)
+autoload -Uz compinit && compinit -C
+
+# fnm (Node.js)
+if command -v fnm &> /dev/null; then
+    eval "$(fnm env --use-on-cd)"
+fi
+
+# uv (Python)
+if command -v uv &> /dev/null; then
+    eval "$(uv generate-shell-completion zsh)"
+fi
+
+# 5. Plugins & UX
+# ------------------------------------------------------------------------------
+_brew_prefix="$(brew --prefix 2>/dev/null)"
+
+if [ -n "$_brew_prefix" ]; then
+    [ -f "$_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ] && \
+        source "$_brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    [ -f "$_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ] && \
+        source "$_brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+fi
+
+unset _brew_prefix
+
+# History
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=10000
+SAVEHIST=10000
+setopt APPEND_HISTORY
+setopt SHARE_HISTORY
+setopt INC_APPEND_HISTORY
+
+# Aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+alias g='git'
+alias c4='cd ~/projects/c4'
+alias reload='source ~/.zshrc'
+alias cat='bat --paging=never'
+# Antigravity CLI (from Antigravity.app)
+alias agy='/Applications/Antigravity.app/Contents/Resources/app/bin/antigravity'
+alias vault='agy ~/Desktop/personal'
+
+# 6. Prompt (Oh My Posh)
+# ------------------------------------------------------------------------------
+if command -v oh-my-posh &> /dev/null; then
+    eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/patriksvensson.omp.json)"
+fi
+
+# 7. Local/Host Specific Overrides
+# ------------------------------------------------------------------------------
+if [ -f "$HOME/.zshrc.local" ]; then
+    source "$HOME/.zshrc.local"
+fi

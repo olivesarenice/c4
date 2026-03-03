@@ -1,4 +1,4 @@
-# ~/.zshrc (Managed by c4)
+# ~/.zshrc — WSL/Linux (Managed by c4)
 
 # 1. Secrets & Environment
 # ------------------------------------------------------------------------------
@@ -6,17 +6,14 @@ if [ -f "$HOME/.config/c4/secrets.env" ]; then
     source "$HOME/.config/c4/secrets.env"
 fi
 
-
 # 2. SSH Agent
 # ------------------------------------------------------------------------------
-# Start ssh-agent if not running
 if [ -z "$SSH_AUTH_SOCK" ]; then
    eval "$(ssh-agent -s)" > /dev/null
 fi
 
-# 2. Core Toolchain (Brew)
+# 3. Core Toolchain (Brew)
 # ------------------------------------------------------------------------------
-# Brew
 if [ -d "/home/linuxbrew/.linuxbrew/bin" ]; then
     eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
 elif [ -d "$HOME/.linuxbrew/bin" ]; then
@@ -27,7 +24,7 @@ fi
 [ -d "/usr/local/cuda-13.0/bin" ] && export PATH="/usr/local/cuda-13.0/bin:$PATH"
 [ -d "/usr/local/cuda-12.4/lib64" ] && export LD_LIBRARY_PATH="/usr/local/cuda-12.4/lib64:$LD_LIBRARY_PATH"
 
-# 3. Universal Runtimes
+# 4. Universal Runtimes
 # ------------------------------------------------------------------------------
 # fnm (Node.js)
 if command -v fnm &> /dev/null; then
@@ -35,15 +32,12 @@ if command -v fnm &> /dev/null; then
 fi
 
 # uv (Python)
-# uv is in brew path, so auto-loaded.
-# Completion:
 if command -v uv &> /dev/null; then
     eval "$(uv generate-shell-completion zsh)"
 fi
 
-# 4. Plugins & UX
+# 5. Plugins & UX
 # ------------------------------------------------------------------------------
-# Helper to source brew plugins
 source_brew_plugin() {
     local p="/home/linuxbrew/.linuxbrew/share/$1/$1.zsh"
     local p2="$HOME/.linuxbrew/share/$1/$1.zsh"
@@ -75,13 +69,13 @@ alias cat='bat --paging=never'
 alias agy='antigravity'
 alias vault='antigravity C:/Users/Oliver/Desktop/personal'
 
-# 5. Prompt (Oh My Posh)
+# 6. Prompt (Oh My Posh)
 # ------------------------------------------------------------------------------
 if command -v oh-my-posh &> /dev/null; then
     eval "$(oh-my-posh init zsh --config $(brew --prefix oh-my-posh)/themes/patriksvensson.omp.json)"
 fi
 
-# 6. Local/Host Specific Overrides
+# 7. Local/Host Specific Overrides
 # ------------------------------------------------------------------------------
 if [ -f "$HOME/.zshrc.local" ]; then
     source "$HOME/.zshrc.local"

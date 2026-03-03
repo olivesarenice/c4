@@ -3,12 +3,16 @@ set -e
 
 # scripts/sync-agents.sh
 # Syncs c4/.agent/ (rules, workflows, skills) to the global Antigravity directories.
-# Targets the Windows-side ~/.gemini/ space via /mnt/c/Users/<user>.
+# Works on both macOS and WSL/Windows.
 #
-# Global Antigravity paths (Windows):
-#   RULES:     ~/.gemini/GEMINI.md
-#   WORKFLOWS: ~/.gemini/antigravity/global_workflows/<workflow>.md
-#   SKILLS:    ~/.gemini/antigravity/skills/<skill-folder>/SKILL.md
+# Global Antigravity paths:
+#   macOS:
+#     RULES:     ~/.gemini/GEMINI.md
+#     WORKFLOWS: ~/.gemini/antigravity/global_workflows/<workflow>.md
+#     SKILLS:    ~/.gemini/antigravity/skills/<skill-folder>/SKILL.md
+#
+#   Windows (via WSL):
+#     Same structure under /mnt/c/Users/<user>/.gemini/
 
 echo "=== c4: Agent Config Sync ==="
 
@@ -20,20 +24,33 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 C4_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 AGENT_DIR="$C4_DIR/.agent"
 
-# Detect Windows username from /mnt/c/Users (first non-system directory)
-WIN_USER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
-if [ -z "$WIN_USER" ]; then
-    echo "Error: Could not detect Windows username. Are you running from WSL?"
-    exit 1
+# ---------------------------------------------------------------------------
+# Detect OS and set target paths
+# ---------------------------------------------------------------------------
+
+OS="$(uname -s)"
+
+if [ "$OS" = "Darwin" ]; then
+    # macOS — target is just ~/.gemini
+    GEMINI_DIR="$HOME/.gemini"
+    echo "Platform      : macOS"
+else
+    # WSL — target is Windows-side ~/.gemini via /mnt/c
+    WIN_USER=$(cmd.exe /c "echo %USERNAME%" 2>/dev/null | tr -d '\r')
+    if [ -z "$WIN_USER" ]; then
+        echo "Error: Could not detect Windows username. Are you running from WSL?"
+        exit 1
+    fi
+    WIN_HOME="/mnt/c/Users/$WIN_USER"
+    GEMINI_DIR="$WIN_HOME/.gemini"
+    echo "Platform      : WSL"
+    echo "Windows user  : $WIN_USER"
 fi
 
-WIN_HOME="/mnt/c/Users/$WIN_USER"
-GEMINI_DIR="$WIN_HOME/.gemini"
 TARGET_RULES="$GEMINI_DIR/GEMINI.md"
 TARGET_WORKFLOWS="$GEMINI_DIR/antigravity/global_workflows"
 TARGET_SKILLS="$GEMINI_DIR/antigravity/skills"
 
-echo "Windows user  : $WIN_USER"
 echo "Gemini dir    : $GEMINI_DIR"
 echo ""
 
@@ -99,6 +116,9 @@ fi
 
 echo ""
 echo "✅ Agent sync complete."
-echo ""
-echo "Reminder: ~/.gemini/GEMINI.md content should also be pasted into:"
-echo "  VS Code → User Settings JSON → \"gemini.codeAssist.userContext\""
+
+if [ "$OS" != "Darwin" ]; then
+    echo ""
+    echo "Reminder: ~/.gemini/GEMINI.md content should also be pasted into:"
+    echo "  VS Code → User Settings JSON → \"gemini.codeAssist.userContext\""
+fi
