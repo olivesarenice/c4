@@ -1,6 +1,6 @@
 # Manual Setup & Bootstrapping Guide
 
-This document details the **one-time setup** required to provision a new machine (Windows/WSL or Linux) with the `c4` Digital Life OS.
+This document details the **one-time setup** required to provision a new machine (macOS, Windows/WSL, or Linux) with the `c4` Digital Life OS.
 
 ## 1. Prerequisites (Windows Users Only)
 
@@ -45,6 +45,12 @@ If you are on Windows, you must first set up WSL2. Open **PowerShell (Admin)** a
 
 The `c4` environment relies on **Bitwarden** for all secrets (SSH keys, API tokens). You must install the CLI manually.
 
+**macOS**:
+```bash
+brew install bitwarden-cli
+bw --version   # verify
+```
+
 **Linux / WSL**:
 
 Download the latest release from: https://github.com/bitwarden/clients/releases?q=cli&expanded=true
@@ -64,8 +70,9 @@ Once prerequisites are met, the `bootstrap.sh` script automates the rest.
 
 ### A. Install Git
 
-Fresh Ubuntu/WSL images often don't have `git` pre-installed. In your Ubuntu terminal:
+**macOS**: Git ships with Xcode Command Line Tools (`xcode-select --install`).
 
+**Linux/WSL**: Fresh Ubuntu images may not have git:
 ```bash
 sudo apt-get update && sudo apt-get install -y git
 git --version   # verify
@@ -93,9 +100,9 @@ git remote set-url origin git@github.com:olivesarenice/c4.git
 ./bootstrap.sh
 ```
 **What it does:**
-1.  **Installs Core Tools**: Linuxbrew, Zsh, Starship, basic utils.
+1.  **Installs Core Tools**: Homebrew, Zsh, Starship, basic utils.
 2.  **Installs Dev Chain**: `uv` (Python), `fnm` (Node), `ripgrep`, `bat`, `fzf`, etc.
-3.  **Configures Shell**: Links a standardized `.zshrc`.
+3.  **Configures Shell**: Links the platform-appropriate `.zshrc` (`zshrc.mac` on macOS, `zshrc.wsl` on Linux).
 4.  **Sets up Identity**: Prompts you to log in to Bitwarden and fetches your **SSH Keys** (`infra-ssh-key`).
 
 ### C. Fetch Secrets (`fetch.sh`)
@@ -117,7 +124,7 @@ Ensure you have created these items in Bitwarden (Item Name -> Secret):
 
 ## 4. Manual Config Migration
 
-### VS Code Profile
+### VS Code Profile (WSL/Linux)
 
 The repo ships a full VS Code profile at `capabilities/desktop/default.code-profile`.
 
@@ -131,3 +138,12 @@ The repo ships a full VS Code profile at `capabilities/desktop/default.code-prof
 3. `git commit`
 
 > **Tip**: When exporting, uncheck "UI State" to keep diffs clean.
+
+### Antigravity Settings (macOS)
+
+On macOS with Antigravity, editor settings live at:
+```
+~/Library/Application Support/Antigravity/User/settings.json
+```
+
+The settings were extracted from the VS Code profile above. To update, edit the file directly or use `Cmd+,` in Antigravity.
