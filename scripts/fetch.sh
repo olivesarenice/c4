@@ -106,8 +106,13 @@ fi
 printf "%s\n" "$KEY_CONTENT" > "$TARGET_FILE"
 chmod 600 "$TARGET_FILE"
 
+# Regenerate the public key from the private key to keep them in sync
+ssh-keygen -y -f "$TARGET_FILE" > "${TARGET_FILE}.pub"
+chmod 644 "${TARGET_FILE}.pub"
+
 echo "✅ SSH Key installed to $TARGET_FILE"
-echo "Adding to ssh-agent it to your agent: ssh-add $TARGET_FILE"
+echo "✅ Public key regenerated at ${TARGET_FILE}.pub"
+echo "Adding to ssh-agent: ssh-add $TARGET_FILE"
 ssh-add $TARGET_FILE
 
 echo ""
