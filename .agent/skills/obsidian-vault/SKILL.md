@@ -7,7 +7,21 @@ description: Access the USER's personal Obsidian knowledge vault — location, r
 
 ## Vault Location
 
-`C:\Users\Oliver\Desktop\personal`
+The vault path depends on the OS of the current device:
+
+| OS      | Vault Path                              |
+|---------|-----------------------------------------|
+| Windows | `C:\Users\Oliver\Documents\personal`      |
+| macOS   | `~/Documents/personal`                    |
+
+Detect the OS from the user's system context before constructing any paths.
+
+## Agent Context Directory
+
+The vault always contains a `_agent/` directory with context files (instructions, templates, schemas, etc.). **Before doing anything with the vault, read all files in `<vault>/_agent/` and follow any directives they contain.**
+
+- Windows: `C:\Users\Oliver\Desktop\personal\_agent\`
+- macOS: `~/Documents/personal/_agent/`
 
 ## Read / Write Rules
 
@@ -34,10 +48,10 @@ Content...
 
 ## Common Tasks
 
-**Explore structure:** `list_dir C:\Users\Oliver\Desktop\personal`
+**Explore structure:** `list_dir <vault>`
 
 **Search content:** `grep_search` against the vault path.
 
-**Read a note:** `view_file` with the Windows path.
+**Read a note:** `view_file` with the full OS-appropriate path.
 
-**Create a note:** `write_to_file` → `C:\Users\Oliver\Desktop\personal\AI Inbox\<filename>.md`
+**Create a note:** `write_to_file` → `<vault>/AI Inbox/<filename>.md`
