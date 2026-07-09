@@ -13,8 +13,8 @@ If you are on Windows, you must first set up WSL2. Open **PowerShell (Admin)** a
     wsl --set-default Ubuntu
     ```
 
-2.  **Install Antigravity**:
-    *   Download and install the Antigravity application on Windows.
+2.  **Install Antigravity IDE**:
+    *   Download and install the Antigravity IDE application on Windows.
 
 3.  **Configure WSL Interop (Fix `wslu` bug)**:
     Open your **Ubuntu Terminal** and run these commands to ensure Windows apps (like browsers) can open from Linux:
@@ -139,11 +139,11 @@ The repo ships a full VS Code profile at `capabilities/desktop/default.code-prof
 
 > **Tip**: When exporting, uncheck "UI State" to keep diffs clean.
 
-### Antigravity Settings (macOS)
+### Antigravity IDE Settings (macOS)
 
-On macOS with Antigravity, editor settings live at:
+On macOS with Antigravity IDE, editor settings live at:
 ```
-~/Library/Application Support/Antigravity/User/settings.json
+~/Library/Application Support/Antigravity IDE/User/settings.json
 ```
 
-The settings were extracted from the VS Code profile above. To update, edit the file directly or use `Cmd+,` in Antigravity.
+The settings were extracted from the VS Code profile above. To update, edit the file directly or use `Cmd+,` in Antigravity IDE.

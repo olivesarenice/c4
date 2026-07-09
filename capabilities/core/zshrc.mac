@@ -64,8 +64,8 @@ alias g='git'
 alias c4='cd ~/projects/c4'
 alias reload='source ~/.zshrc'
 alias cat='bat --paging=never'
-# Antigravity CLI (from Antigravity.app)
-alias agy='/Applications/Antigravity.app/Contents/Resources/app/bin/antigravity'
+# Antigravity CLI (from Antigravity IDE.app)
+alias agy='"/Applications/Antigravity IDE.app/Contents/Resources/app/bin/antigravity-ide"'
 alias vault='agy ~/Documents/personal'
 
 # 6. Prompt (Oh My Posh)
@@ -79,3 +79,6 @@ fi
 if [ -f "$HOME/.zshrc.local" ]; then
     source "$HOME/.zshrc.local"
 fi
+
+# Added by Antigravity IDE
+export PATH="/Users/oliver/.antigravity-ide/antigravity-ide/bin:$PATH"
